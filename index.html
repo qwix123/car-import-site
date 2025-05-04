@@ -45,7 +45,7 @@
       background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
       box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-      max-width: 930px;
+      max-width: 960px;
       width: 100%;
       padding: 25px;
       display: grid;
@@ -53,85 +53,64 @@
       gap: 30px;
       animation: fadeUp 1s ease forwards;
     }
-    @media (max-width: 830px) {
+    @media (max-width: 880px) {
       main {
         grid-template-columns: 1fr;
       }
     }
 
-    .cars-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
-      gap: 20px;
+    .brands-list {
+      max-height: 320px;
       overflow-y: auto;
-      max-height: 570px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 15px;
+      justify-content: center;
+      padding: 6px;
       border-radius: 16px;
-    }
-    .car-card {
       background: rgba(255,255,255,0.1);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      cursor: pointer;
-      position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       user-select: none;
     }
-    .car-card:hover {
-      transform: translateY(-10px) scale(1.05);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.7);
-      z-index: 10;
-    }
-    .car-image {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      filter: brightness(0.85);
-      transition: filter 0.3s ease;
-    }
-    .car-card:hover .car-image {
-      filter: brightness(1);
-    }
-    .car-info {
-      padding: 15px 20px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .car-name {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: #f4f4f4;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
-    }
-    .car-description {
-      font-size: 0.9rem;
-      color: #d0d0d0;
-      flex-grow: 1;
-      margin-bottom: 12px;
-      line-height: 1.3;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    }
-    .select-car-btn {
-      background-color: #3498db;
-      border: none;
-      padding: 10px 15px;
+    .brand-item {
+      width: 70px;
+      height: 90px;
+      background: rgba(255,255,255,0.15);
       border-radius: 14px;
-      color: white;
-      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
       cursor: pointer;
-      font-size: 1rem;
-      text-align: center;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.5);
-      user-select: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      padding: 5px 4px;
+      flex-shrink: 0;
     }
-    .select-car-btn:hover {
-      background-color: #1f78c7;
+    .brand-item:hover, .brand-item.selected {
+      transform: scale(1.15);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+    }
+    .brand-item img {
+      max-width: 48px;
+      max-height: 48px;
+      user-select: none;
+      pointer-events: none;
+      filter: drop-shadow(0 0 0.1rem rgba(0,0,0,0.5));
+      margin-bottom: 4px;
+      object-fit: contain;
+      height: 48px;
+      width: 48px;
+    }
+    .brand-name {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #d2d2d2;
+      user-select: none;
+      line-height: 1.2;
+      max-width: 70px;
+      word-wrap: break-word;
     }
 
     .calculator-section {
@@ -142,7 +121,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      max-height: 600px;
+      max-height: 730px;
       overflow-y: auto;
       position: relative;
     }
@@ -215,7 +194,8 @@
       color: #dff0d8;
       box-shadow: 0 0 15px #2ecc71;
       user-select: text;
-      min-height: 70px;
+      min-height: 100px;
+      line-height: 1.4;
     }
     .contact-choice {
       margin-top: 15px;
@@ -259,21 +239,34 @@
   </header>
 
   <main>
-    <section class="cars-gallery" aria-label="Каталог автомобилей">
-      <!-- Car cards inserted by JS -->
+    <section aria-label="Выберите марку автомобиля" style="grid-column: span 2; text-align:center; margin-bottom:15px;">
+      <div class="brands-list" role="listbox" id="brandsList" tabindex="0" aria-label="Выбор марки автомобиля" aria-activedescendant="">
+      </div>
     </section>
 
-    <section class="calculator-section" aria-label="Калькулятор стоимости и заявка">
+    <section class="calculator-section" aria-label="Калькулятор стоимости и заявка" style="grid-column: span 2;">
       <h2>Калькулятор и заявка</h2>
       <form id="calcForm" class="calculator-form" novalidate>
-        <label for="selectedCar">Выбранный автомобиль</label>
-        <input type="text" id="selectedCar" name="selectedCar" readonly placeholder="Выберите машину слева" required />
+        <label for="selectedCar">Выбранная марка автомобиля</label>
+        <input type="text" id="selectedCar" name="selectedCar" readonly placeholder="Выберите марку выше" required />
+
+        <label for="selectedModel">Выбранная модель</label>
+        <select id="selectedModel" name="selectedModel" required>
+          <option value="" disabled selected>Выберите модель</option>
+        </select>
 
         <label for="price">Цена автомобиля (€)</label>
         <input type="number" id="price" name="price" min="500" step="100" placeholder="Введите цену" required />
 
-        <label for="shipping">Стоимость доставки (€)</label>
-        <input type="number" id="shipping" name="shipping" min="0" step="50" value="500" required />
+        <label for="shippingMethod">Способ доставки</label>
+        <select id="shippingMethod" name="shippingMethod" required>
+          <option value="" disabled selected>Выберите способ доставки</option>
+          <option value="own">Своим ходом через Грузию (постоянная сумма 7500-8000€)</option>
+          <option value="tow">На лавете (постоянная сумма 8000€)</option>
+          <option value="container_minsk">Контейнер - Минск (постоянная сумма 7600€)</option>
+          <option value="container_peter">Контейнер - Санкт-Петербург (постоянная сумма 7700€)</option>
+          <option value="container_roterdam">Контейнер - Роттердам (постоянная сумма 7800€)</option>
+        </select>
 
         <label for="contactMethod" class="contact-choice">Удобный способ связи</label>
         <select id="contactMethod" name="contactMethod" required>
@@ -298,56 +291,188 @@
   </main>
 
   <script>
-    const cars = [
+    // Brands with logos and models with base prices
+    const brands = [
       {
-        brand: "BMW",
-        model: "X5",
-        description: "Мощный, стильный внедорожник с высокой проходимостью и комфортом.",
-        image: "https://images.pexels.com/photos/1149831/pexels-photo-1149831.jpeg?auto=compress&cs=tinysrgb&h=350",
-        basePrice: 35000,
+        name: "Audi",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Audi_logo_2016.svg",
+        models: [
+          {name: "A1", basePrice: 22000},
+          {name: "A3", basePrice: 25000},
+          {name: "A4", basePrice: 28000},
+          {name: "A6", basePrice: 30000},
+          {name: "Q5", basePrice: 35000}
+        ]
       },
       {
-        brand: "Audi",
-        model: "A6",
-        description: "Элегантный бизнес-седан с передовыми технологиями и комфортом.",
-        image: "https://images.pexels.com/photos/1149130/pexels-photo-1149130.jpeg?auto=compress&cs=tinysrgb&h=350",
-        basePrice: 30000,
+        name: "BMW",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg",
+        models: [
+          {name: "1 Series", basePrice: 24000},
+          {name: "3 Series", basePrice: 28000},
+          {name: "X1", basePrice: 30000},
+          {name: "X3", basePrice: 35000},
+          {name: "X5", basePrice: 40000}
+        ]
       },
       {
-        brand: "Volkswagen",
-        model: "Golf",
-        description: "Надежный и экономичный хэтчбек для повседневной городской езды.",
-        image: "https://images.pexels.com/photos/1402787/pexels-photo-1402787.jpeg?auto=compress&cs=tinysrgb&h=350",
-        basePrice: 18000,
+        name: "Mercedes-Benz",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg",
+        models: [
+          {name: "A-Class", basePrice: 25000},
+          {name: "C-Class", basePrice: 32000},
+          {name: "E-Class", basePrice: 40000},
+          {name: "GLE", basePrice: 45000}
+        ]
       },
       {
-        brand: "Mercedes-Benz",
-        model: "E-Class",
-        description: "Классический люксовый седан с превосходным комфортом и мощностью.",
-        image: "https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg?auto=compress&cs=tinysrgb&h=350",
-        basePrice: 40000,
+        name: "Volkswagen",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Volkswagen_Logo_2019.svg",
+        models: [
+          {name: "Golf", basePrice: 22000},
+          {name: "Passat", basePrice: 25000},
+          {name: "Tiguan", basePrice: 27000}
+        ]
       },
       {
-        brand: "Porsche",
-        model: "Cayenne",
-        description: "Спортивный и роскошный внедорожник для любителей драйва.",
-        image: "https://images.pexels.com/photos/4061619/pexels-photo-4061619.jpeg?auto=compress&cs=tinysrgb&h=350",
-        basePrice: 60000,
+        name: "Tesla",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Tesla_T_symbol.svg",
+        models: [
+          {name: "Model S", basePrice: 70000},
+          {name: "Model 3", basePrice: 50000},
+          {name: "Model X", basePrice: 80000},
+          {name: "Model Y", basePrice: 60000}
+        ]
+      },
+      {
+        name: "Toyota",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/9/9d/Toyota_logo.svg",
+        models: [
+          {name: "Corolla", basePrice: 18000},
+          {name: "Camry", basePrice: 25000},
+          {name: "RAV4", basePrice: 27000}
+        ]
+      },
+      {
+        name: "Ford",
+        logo: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Ford_logo_flat.svg",
+        models: [
+          {name: "Focus", basePrice: 19000},
+          {name: "Fusion", basePrice: 23000},
+          {name: "Escape", basePrice: 26000}
+        ]
       }
+      // Add more brands and models if needed
     ];
 
-    const gallery = document.querySelector('.cars-gallery');
+    const shippingCosts = {
+      own: 7750, // average 7500 - 8000€
+      tow: 8000,
+      container_minsk: 7600,
+      container_peter: 7700,
+      container_roterdam: 7800
+    };
+
+    const brandsList = document.getElementById('brandsList');
     const selectedCarInput = document.getElementById('selectedCar');
+    const selectedModelSelect = document.getElementById('selectedModel');
     const priceInput = document.getElementById('price');
+    const shippingMethodSelect = document.getElementById('shippingMethod');
     const calcForm = document.getElementById('calcForm');
     const resultMessage = document.getElementById('resultMessage');
 
-    // Customs calculation: custom duty 10%, VAT 20%, environmental fee 300€
-    function calculateCosts(basePrice, shipping) {
+    let currentSelectedIndex = -1;
+
+    function createBrandItem(brand, index) {
+      const div = document.createElement('div');
+      div.className = 'brand-item';
+      div.setAttribute('tabindex', '0');
+      div.setAttribute('role', 'option');
+      div.setAttribute('id', `brand-${index}`);
+      div.setAttribute('aria-selected', 'false');
+      div.title = brand.name;
+      div.innerHTML = `<img src="${brand.logo}" alt="${brand.name} логотип"/><div class="brand-name">${brand.name}</div>`;
+      div.addEventListener('click', () => selectBrand(index));
+      div.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectBrand(index);
+        } else if(e.key === 'ArrowRight') {
+          e.preventDefault();
+          if(index + 1 < brands.length)
+            brandsList.children[index + 1].focus();
+        } else if(e.key === 'ArrowLeft') {
+          e.preventDefault();
+          if(index - 1 >= 0)
+            brandsList.children[index - 1].focus();
+        } else if(e.key === 'ArrowDown') {
+          e.preventDefault();
+          let next = index + 5;
+          if(next < brands.length)
+            brandsList.children[next].focus();
+        } else if(e.key === 'ArrowUp') {
+          e.preventDefault();
+          let prev = index - 5;
+          if(prev >= 0)
+            brandsList.children[prev].focus();
+        }
+      });
+      return div;
+    }
+
+    function selectBrand(index) {
+      if(currentSelectedIndex >= 0) {
+        brandsList.children[currentSelectedIndex].classList.remove('selected');
+        brandsList.children[currentSelectedIndex].setAttribute('aria-selected','false');
+      }
+      currentSelectedIndex = index;
+      brandsList.children[index].classList.add('selected');
+      brandsList.children[index].setAttribute('aria-selected','true');
+      const brand = brands[index];
+      selectedCarInput.value = brand.name;
+      populateModels(brand.models);
+      setDefaultPrice();
+      resultMessage.textContent = '';
+      priceInput.focus();
+    }
+
+    function populateModels(models) {
+      selectedModelSelect.innerHTML = '<option value="" disabled selected>Выберите модель</option>';
+      models.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model.name;
+        option.textContent = model.name;
+        option.dataset.basePrice = model.basePrice;
+        selectedModelSelect.appendChild(option);
+      });
+      selectedModelSelect.disabled = false;
+    }
+
+    function setDefaultPrice() {
+      if(selectedModelSelect.options.length > 1) {
+        priceInput.value = selectedModelSelect.options[1].dataset.basePrice || '';
+      } else {
+        priceInput.value = '';
+      }
+    }
+
+    selectedModelSelect.addEventListener('change', () => {
+      if(selectedModelSelect.selectedOptions.length > 0){
+        const option = selectedModelSelect.selectedOptions[0];
+        const basePrice = option.dataset.basePrice;
+        if(basePrice) priceInput.value = basePrice;
+      }
+    });
+
+    brands.forEach((brand, index) => {
+      brandsList.appendChild(createBrandItem(brand,index));
+    });
+
+    function calculateCosts(basePrice, shippingCost) {
       const customsDuty = basePrice * 0.10;
-      const vat = (basePrice + customsDuty + shipping + 300) * 0.20;
       const environmentalFee = 300;
-      const total = basePrice + customsDuty + vat + shipping + environmentalFee;
+      const vat = (basePrice + customsDuty + shippingCost + environmentalFee) * 0.20;
+      const total = basePrice + customsDuty + vat + shippingCost + environmentalFee;
       return {
         customsDuty,
         vat,
@@ -356,60 +481,34 @@
       }
     }
 
-    // Populate gallery with cars
-    cars.forEach((car, i) => {
-      const card = document.createElement('article');
-      card.classList.add('car-card');
-      card.tabIndex = 0;
-      card.setAttribute('role', 'button');
-      card.setAttribute('aria-label', `Выбрать автомобиль ${car.brand} ${car.model}`);
-      card.innerHTML = `
-        <img src="${car.image}" alt="${car.brand} ${car.model}" class="car-image" loading="lazy" />
-        <div class="car-info">
-          <h3 class="car-name">${car.brand} ${car.model}</h3>
-          <p class="car-description">${car.description}</p>
-          <button class="select-car-btn" type="button" aria-label="Выбрать автомобиль ${car.brand} ${car.model}">Выбрать</button>
-        </div>
-      `;
-      gallery.appendChild(card);
-
-      const selectBtn = card.querySelector('.select-car-btn');
-
-      function selectCar() {
-        selectedCarInput.value = `${car.brand} ${car.model}`;
-        priceInput.value = car.basePrice;
-        resultMessage.textContent = '';
-        priceInput.focus();
-      }
-
-      selectBtn.addEventListener('click', selectCar);
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          selectCar();
-        }
-      });
-    });
-
     calcForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      // Validate form fields
       if (!selectedCarInput.value) {
-        alert('Пожалуйста, выберите автомобиль слева.');
+        alert('Пожалуйста, выберите марку автомобиля.');
         selectedCarInput.focus();
         return;
       }
-      if (!priceInput.value || Number(priceInput.value) < 500) {
+      if (!selectedModelSelect.value) {
+        alert('Пожалуйста, выберите модель автомобиля.');
+        selectedModelSelect.focus();
+        return;
+      }
+      const basePrice = Number(priceInput.value);
+      if (isNaN(basePrice) || basePrice < 500) {
         alert('Введите корректную цену автомобиля, минимум 500€.');
         priceInput.focus();
         return;
       }
-      if (!calcForm.shipping.value || Number(calcForm.shipping.value) < 0) {
-        alert('Введите корректную стоимость доставки.');
-        calcForm.shipping.focus();
+
+      const shippingMethod = shippingMethodSelect.value;
+      if(!shippingMethod || !(shippingMethod in shippingCosts)) {
+        alert('Пожалуйста, выберите способ доставки.');
+        shippingMethodSelect.focus();
         return;
       }
+      const shippingCost = shippingCosts[shippingMethod];
+
       if (!calcForm.contactMethod.value) {
         alert('Пожалуйста, выберите удобный способ связи.');
         calcForm.contactMethod.focus();
@@ -421,27 +520,34 @@
         return;
       }
 
-      const basePrice = Number(priceInput.value);
-      const shipping = Number(calcForm.shipping.value);
+      const { customsDuty, vat, environmentalFee, total } = calculateCosts(basePrice, shippingCost);
 
-      const { customsDuty, vat, environmentalFee, total } = calculateCosts(basePrice, shipping);
-
-      // Show total costs
       resultMessage.innerHTML = `
+        <p>Марка: <strong>${selectedCarInput.value}</strong></p>
+        <p>Модель: <strong>${selectedModelSelect.value}</strong></p>
         <p>Таможенная пошлина (10%): <strong>€${customsDuty.toFixed(2)}</strong></p>
         <p>НДС (20%): <strong>€${vat.toFixed(2)}</strong></p>
         <p>Экологический сбор: <strong>€${environmentalFee.toFixed(2)}</strong></p>
-        <p>Стоимость доставки: <strong>€${shipping.toFixed(2)}</strong></p>
+        <p>Стоимость доставки (${shippingMethodSelect.options[shippingMethodSelect.selectedIndex].text}): <strong>€${shippingCost.toFixed(2)}</strong></p>
         <p><strong>Итоговая стоимость: €${total.toFixed(2)}</strong></p>
         <p style="margin-top: 20px; font-size: 1.1rem;">Спасибо за заявку! Мы свяжемся с вами через <strong>${calcForm.contactMethod.value}</strong> по указанным данным.</p>
       `;
 
-      // Reset form after delay
       setTimeout(() => {
         calcForm.reset();
         selectedCarInput.value = '';
-      }, 5000);
+        selectedModelSelect.innerHTML = '<option value="" disabled selected>Выберите модель</option>';
+        selectedModelSelect.disabled = true;
+        if(currentSelectedIndex >= 0){
+          brandsList.children[currentSelectedIndex].classList.remove('selected');
+          brandsList.children[currentSelectedIndex].setAttribute('aria-selected','false');
+          currentSelectedIndex = -1;
+        }
+      }, 9000);
     });
+
+    // Disable model select initially
+    selectedModelSelect.disabled = true;
   </script>
 </body>
 </html>
